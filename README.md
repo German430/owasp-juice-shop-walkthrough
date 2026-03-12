@@ -1,12 +1,11 @@
  OWASP Juice Shop — Penetration Test Write-Up
 
-**Target:** OWASP Juice Shop v17.x  
+**Target:** OWASP Juice Shop v19.2.1  
 **Attacker Machine:** Kali Linux (VMware Fusion on macOS)  
 **Testing Type:** Black-box web application penetration test  
 **Environment:** Intentionally vulnerable local lab (Docker)  
 **Date:** March 2026  
-
----
+![Juice Shop version confirmation](./screenshots/Juiceshopversion.png)---
 
 ## Overview
 
@@ -52,6 +51,8 @@ Juice Shop is a Single Page Application (SPA) using Angular's hash-based routing
 **Severity:** Informational  
 **OWASP:** A01 - Broken Access Control
 
+![Score Board discovered via JS bundle](./screenshots/JSscoreboard.png)
+
 Angular compiles all client-side routes into a single JS bundle (`main.js`). Extracting these routes exposes the full application attack surface without any authentication.
 
 **Command:**
@@ -80,6 +81,8 @@ wallet-web3
 **Severity:** Medium  
 **OWASP:** A05 - Security Misconfiguration
 
+![robots.txt disclosing /ftp path](./screenshots/JSrobots.txt.png)
+
 `robots.txt` is intended to instruct search engine crawlers — but listing sensitive paths under `Disallow` advertises those paths to any attacker who checks the file.
 
 **URL:** `http://localhost:3000/robots.txt`  
@@ -91,6 +94,9 @@ wallet-web3
 
 **Severity:** Critical  
 **OWASP:** A05 - Security Misconfiguration
+
+![Unauthenticated FTP directory listing](./screenshots/JS:ftp.png)
+![KeePass vault download](./screenshots/JSkdbx.png)
 
 Browsing to `/ftp` reveals a publicly accessible directory requiring no authentication. The directory contains multiple sensitive files available for direct download.
 
@@ -114,6 +120,8 @@ In a real engagement, the exposure of a KeePass vault and malware samples on an 
 **Severity:** High  
 **OWASP:** A05 - Security Misconfiguration
 
+![Swagger UI exposed without authentication](./screenshots/JS:api-docsSwagger.png)
+
 The application's full API specification is publicly accessible via Swagger UI without any authentication, providing an attacker with a complete map of all available endpoints, HTTP methods, and expected parameters — eliminating the need for manual API enumeration.
 
 **URL:** `http://localhost:3000/api-docs`
@@ -125,6 +133,10 @@ The application's full API specification is publicly accessible via Swagger UI w
 **Severity:** Critical  
 **OWASP:** A03 - Injection  
 **Challenge Completed:** Login Admin ⭐⭐
+
+![POST /rest/user/login returning 401](./screenshots/Postendointlogin.png)
+![SQL injection payload entered in login form](./screenshots/Sqllogin.png)
+![Login bypassed via SQL injection](./screenshots/Solvedlogin.png)
 
 ### Objective
 
@@ -174,6 +186,9 @@ Successfully authenticated as `admin@juice-sh.op` without valid credentials.
 **Severity:** Critical  
 **OWASP:** A01 - Broken Access Control  
 **Challenge Completed:** Admin Section ⭐⭐
+
+![Administration panel exposing full user list](./screenshots/JSAdminjump.png)
+![Authenticated as admin@juice-sh.op](./screenshots/JSadminloggedin.png)
 
 ![full admin panel list]
 
