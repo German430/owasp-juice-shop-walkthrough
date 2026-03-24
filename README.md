@@ -300,7 +300,7 @@ users to malicious sites, or perform actions on behalf of the victim.
 Browser alert dialog triggered from localhost:3000 confirming 
 successful JavaScript execution in the victim's browser context.
 
-![DOM XSS alert dialog](./screenshots/JSXSS.png)
+![DOM XSS alert dialog](./screenshots/JSDOMXSS.png)
 
 ### OWASP Reference: A03 - Injection
 ### Severity: High
