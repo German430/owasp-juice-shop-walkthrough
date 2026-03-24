@@ -264,5 +264,46 @@ Full administration panel accessible, exposing:
 - **Input sanitization is non-negotiable** — a single unsanitized query parameter led to full admin compromise.
 
 ---
+## Phase 4: DOM-Based Cross-Site Scripting (XSS)
+
+**Severity:** High  
+**OWASP:** A03 - Injection  
+**Challenge Completed:** DOM XSS ⭐
+
+### Objective
+Inject and execute malicious client-side JavaScript via the 
+application's search field.
+
+### Target
+Search bar at http://localhost:3000/#/search
+
+### Vulnerability
+The search field reflects user input directly into the page's DOM 
+without sanitization. The browser interprets the injected content as 
+HTML/JavaScript rather than plain text, allowing arbitrary client-side 
+code execution.
+
+### Payload
+```
+<iframe src="javascript:alert(`xss`)">
+```
+
+### How It Works
+The application takes the search query and renders it back into the 
+page unsanitized. Injecting an `<iframe>` tag with a `javascript:` 
+protocol in the `src` attribute causes the browser to execute the 
+JavaScript directly. The `alert()` function confirms code execution — 
+in a real attack this could be used to steal session cookies, redirect 
+users to malicious sites, or perform actions on behalf of the victim.
+
+### Result
+Browser alert dialog triggered from localhost:3000 confirming 
+successful JavaScript execution in the victim's browser context.
+
+![DOM XSS alert dialog](./screenshots/JSXSS.png)
+
+### OWASP Reference: A03 - Injection
+### Severity: High
+### Challenge Completed: DOM XSS (Difficulty: 1/5 ⭐)
 
 *This write-up was produced in a controlled lab environment against an intentionally vulnerable application for educational purposes.*
