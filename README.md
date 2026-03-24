@@ -242,7 +242,7 @@ Full administration panel accessible, exposing:
 | 6 | Swagger API docs exposed without authentication | High | A05 |
 | 7 | SQL injection authentication bypass | Critical | A03 |
 | 8 | Admin panel accessible via broken access control | Critical | A01 |
-
+| 9 | DOM-Based XSS via unsanitized search field | High | A03 |
 ---
 
 ## Tools Used
